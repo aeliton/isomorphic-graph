@@ -86,12 +86,5 @@ int main(int argc, char *argv[])
         printf("not isomorphic\n");
     }
 
-
-    // print graphs function
-    // generate signature for g1
-    // generate signature each vertice of g2 and compare with g1 signature
-    // -> match: print the correpondece
-    // -> not match: print not isomorphic
-    
     return 0;
 }

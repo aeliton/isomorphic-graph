@@ -27,16 +27,22 @@ void print(char *g) {
     }
 }
 
-int verify() {
-    return 0;
+int verify(char *g1, char *g2, char *solution) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (*(g1 + i * 10 + j) != *(g2 + (solution[i] - '0') * 10 + (solution[j] - '0'))) {
+                return 0;
+            }
+        }
+    }
+
+    return 1;
 }
 
-int brute(char* symbols, char *map, int size, int available) {
+int brute(char *g1, char *g2, char* symbols, char *map, int size, int available) {
     // for each vertice in g2, try to map it to g1:0 
     if (available == 0) {
-        printf("[%s] [%s]\n", symbols, map);
-        verify();
-        return 0;
+        return verify(g1, g2, map);
     }
 
     for (int i = 0; i < size; i++) {
@@ -44,7 +50,10 @@ int brute(char* symbols, char *map, int size, int available) {
             char sym = symbols[i];
             symbols[i] = ' ';
             map[size - available] = sym;
-            brute(symbols, map, size, available - 1);
+            if (brute(g1, g2, symbols, map, size, available - 1)) {
+                symbols[i] = sym;
+                return 1;
+            }
             symbols[i] = sym;
         }
     }
@@ -69,7 +78,14 @@ int main(int argc, char *argv[])
         symbols[i] = '0' + i;
     }
 
-    brute(symbols, map, 10, 10);
+    if (brute((char*) g1, (char*) g2, symbols, map, 10, 10)) {
+        for (int i = 0; i < 10; i++) {
+            printf("%d -> %d\n", i, map[i] - '0');
+        }
+    } else {
+        printf("not isomorphic\n");
+    }
+
 
     // print graphs function
     // generate signature for g1

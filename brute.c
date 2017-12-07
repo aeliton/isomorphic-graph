@@ -17,24 +17,22 @@ void read(char *g) {
     }
 }
 
+void print(char *g) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            printf("%d ", *(g + i * 10 + j));
+        }
+        puts("");
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    read((char*)&g1);
-    read((char*)&g2);
+    read((char*) &g1);
+    read((char*) &g2);
+    print((char*) &g1);
+    print((char*) &g2);
 
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            printf("%d ", g1[i][j]);
-        }
-        puts("");
-    }
-    puts("");
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            printf("%d ", g2[i][j]);
-        }
-        puts("");
-    }
 
     // print graphs function
     // generate signature for g1

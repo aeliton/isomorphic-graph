@@ -4,9 +4,6 @@
 
 #define MAX_VERT 13
 
-char g1[MAX_VERT][MAX_VERT];
-char g2[MAX_VERT][MAX_VERT];
-
 void read(char *g) {
     int v;
     for (int i = 0; i<10; i++) {
@@ -63,16 +60,19 @@ int brute(char *g1, char *g2, char* symbols, char *map, int size, int available)
 
 int main(int argc, char *argv[])
 {
-    read((char*) &g1);
-    read((char*) &g2);
-    /*print((char*) &g1);
-    print((char*) &g2);*/
+    char g1[MAX_VERT][MAX_VERT];
+    char g2[MAX_VERT][MAX_VERT];
 
-    char symbols[11];
-    char map[11];
+    char symbols[MAX_VERT];
+    char map[MAX_VERT];
 
+    memset(&g1, 0, sizeof(g1));
+    memset(&g2, 0, sizeof(g2));
     memset(&symbols, 0, MAX_VERT);
     memset(&map, 0, MAX_VERT);
+
+    read((char*) &g1);
+    read((char*) &g2);
 
     for (int i = 0; i < 10; i++) {
         symbols[i] = i;

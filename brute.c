@@ -4,83 +4,93 @@
 
 #define MAX_VERT 13
 
-void read(char *g) {
-    int v;
-    for (int i = 0; i<10; i++) {
+typedef struct graph {
+    int n;
+    char adj[MAX_VERT][MAX_VERT];
+} graph_t;
+
+void read(graph_t *g) {
+    int v, i;
+    for (i = 0; ; i++) {
         while (scanf("%d", &v) == 1) {
-            *(g + i * 10 + v) = 1;
+            g->adj[i][v] = 1;
         }
+
         if (getchar() == '.')
             break;
     }
+
+    g->n = i + 1;
 }
 
-void print(char *g) {
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            printf("%d ", *(g + i * 10 + j));
+void print(graph_t g) {
+    for (int i = 0; i < g.n; i++) {
+        for (int j = 0; j < g.n; j++) {
+            printf("%d ", g.adj[i][j]);
         }
         puts("");
     }
 }
 
-int verify(char *g1, char *g2, char *solution) {
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            if (*(g1 + i * 10 + j) != *(g2 + (solution[i]) * 10 + (solution[j]))) {
+int verify(graph_t g1, graph_t g2, char *solution) {
+    for (int i = 0; i < g1.n; i++) {
+        for (int j = 0; j < g1.n; j++) {
+            if (g1.adj[i][j] != g2.adj[solution[i]][solution[j]]) {
                 return 0;
             }
         }
     }
-
     return 1;
 }
 
-int brute(char *g1, char *g2, char* symbols, char *map, int size, int available) {
-    // for each vertice in g2, try to map it to g1:0 
+int brute(graph_t g1, graph_t g2, char *symbols, char *mapping, int available) {
     if (available == 0) {
-        return verify(g1, g2, map);
+        return verify(g1, g2, mapping);
     }
-
-    for (int i = 0; i < size; i++) {
-        if (symbols[i] != ' ') {
-            char sym = symbols[i];
-            symbols[i] = ' ';
-            map[size - available] = sym;
-            if (brute(g1, g2, symbols, map, size, available - 1)) {
-                symbols[i] = sym;
-                return 1;
-            }
-            symbols[i] = sym;
+    for (int i = 0; i < g1.n; i++) {
+        if (symbols[i] < 0) {
+            continue;
         }
+        char sym = symbols[i];
+        symbols[i] = -1;
+        mapping[g1.n- available] = sym;
+        if (brute(g1, g2, symbols, mapping, available - 1)) {
+            symbols[i] = sym;
+            return 1;
+        }
+        symbols[i] = sym;
     }
-
     return 0;
+}
+
+int isomorphic(graph_t g1, graph_t g2, char *mapping) {
+    if (g1.n != g2.n) {
+        return 0;
+    }
+    char symbols[MAX_VERT];
+    for (int i = 0; i < MAX_VERT; i++) {
+        symbols[i] = i;
+    }
+    return brute(g1, g2, symbols, mapping, g1.n);
 }
 
 int main(int argc, char *argv[])
 {
-    char g1[MAX_VERT][MAX_VERT];
-    char g2[MAX_VERT][MAX_VERT];
-
-    char symbols[MAX_VERT];
-    char map[MAX_VERT];
+    char mapping[MAX_VERT];
+    graph_t g1;
+    graph_t g2;
 
     memset(&g1, 0, sizeof(g1));
     memset(&g2, 0, sizeof(g2));
-    memset(&symbols, 0, MAX_VERT);
-    memset(&map, 0, MAX_VERT);
+    memset(&mapping, 0, MAX_VERT);
 
-    read((char*) &g1);
-    read((char*) &g2);
+    read(&g1);
+    read(&g2);
 
-    for (int i = 0; i < 10; i++) {
-        symbols[i] = i;
-    }
-
-    if (brute((char*) g1, (char*) g2, symbols, map, 10, 10)) {
-        for (int i = 0; i < 10; i++) {
-            printf("%d -> %d\n", i, map[i]);
+    if (isomorphic(g1, g2, mapping)) {
+        printf("%3s -> %3s\n", "G1", "G2");
+        for (int i = 0; i < g1.n; i++) {
+            printf("%3d -> %3d\n", i, mapping[i]);
         }
     } else {
         printf("not isomorphic\n");

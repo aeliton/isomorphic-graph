@@ -1,3 +1,4 @@
+CFLAGS = -g3
 brute:
 
 clean:

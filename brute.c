@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX 200
+#define MAX_VERT 13
 
-char g1[10][10];
-char g2[10][10];
+char g1[MAX_VERT][MAX_VERT];
+char g2[MAX_VERT][MAX_VERT];
 
 void read(char *g) {
     int v;
@@ -30,7 +30,7 @@ void print(char *g) {
 int verify(char *g1, char *g2, char *solution) {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            if (*(g1 + i * 10 + j) != *(g2 + (solution[i] - '0') * 10 + (solution[j] - '0'))) {
+            if (*(g1 + i * 10 + j) != *(g2 + (solution[i]) * 10 + (solution[j]))) {
                 return 0;
             }
         }
@@ -71,16 +71,16 @@ int main(int argc, char *argv[])
     char symbols[11];
     char map[11];
 
-    memset(&symbols, 0, sizeof(symbols));
-    memset(&map, 0, sizeof(map));
+    memset(&symbols, 0, MAX_VERT);
+    memset(&map, 0, MAX_VERT);
 
     for (int i = 0; i < 10; i++) {
-        symbols[i] = '0' + i;
+        symbols[i] = i;
     }
 
     if (brute((char*) g1, (char*) g2, symbols, map, 10, 10)) {
         for (int i = 0; i < 10; i++) {
-            printf("%d -> %d\n", i, map[i] - '0');
+            printf("%d -> %d\n", i, map[i]);
         }
     } else {
         printf("not isomorphic\n");

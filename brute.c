@@ -10,17 +10,17 @@ typedef struct graph {
 } graph_t;
 
 void read(graph_t *g) {
-    int v, i;
-    for (i = 0; ; i++) {
-        while (scanf("%d", &v) == 1) {
-            g->adj[i][v] = 1;
-        }
+    int v;
 
+    memset(g, 0, sizeof(graph_t));
+    for (; ;) {
+        while (scanf("%d", &v) == 1) {
+            g->adj[g->n][v] = 1;
+        }
+        ++(g->n);
         if (getchar() == '.')
             break;
     }
-
-    g->n = i + 1;
 }
 
 void print(graph_t g) {
@@ -80,8 +80,6 @@ int main(int argc, char *argv[])
     graph_t g1;
     graph_t g2;
 
-    memset(&g1, 0, sizeof(g1));
-    memset(&g2, 0, sizeof(g2));
     memset(&mapping, 0, MAX_VERT);
 
     read(&g1);

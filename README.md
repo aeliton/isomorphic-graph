@@ -1,4 +1,4 @@
-# Graph Isomorphism using brute force
+# Brute force for Graph Isomorphism
 
 This work is a study of the implementation found at
 [nauty](http://pallini.di.uniroma1.it) package that uses canonical labeling to
@@ -6,8 +6,8 @@ identify isomorphic graphs.
 
 The work consists in:
 
-0. implement a brute force graph isomorphism checker, (see brute.c);
-1. generating graphs using _geng_ (_nauty_);
+0. implement a brute force graph isomorphism checker (see brute.c);
+1. generate graphs using _geng_ (_nauty_);
 2. convert the graphs to a human readable format, using _showg_ (_nauty_);
 3. format the graph to the format used by *brute*;
 4. run the generate inputs in brute and _dreadnaut_ (_nauty_);
@@ -15,8 +15,8 @@ The work consists in:
 
 ## Input
 
-For *brute*, two lines must be given as input, each line describes a graph. The input format
-follows these rules:
+For *brute*, two lines must be given as input, each line describes a graph. The
+input format follows these rules:
 
 1. Vertex adjacencies are represented as a sequence of numbers separated by spaces
 2. Vertices adjacencies are divided by semicolon (;) and given in order
@@ -36,7 +36,17 @@ An example of input for a 6 vertices graph:
 
 Sources: nug26.pdf (_nauty_)
 
+* **automorphism**: An automorphism of a graph is a permutation of the vertex
+labels so that the set of edges remains the same;
+* **equivalence**: Two vertices are equivalent if there is
+an automorphism taking one to the other;
+* **orbits**: A set of equivalent vertices;
+* **canonical labelling**: This is an operation of placing the vertex labels in
+a way that does not depend on where they were before;
+* **isomorphic graphs**: Two graphs are isomorphic when their canonized
+* representation are the same.
 
+Nauty applies canonical labelling to determine isomorphic graphs.
 
 ## TODO list
 

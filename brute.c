@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 #define MAX_VERT 13
 
@@ -79,13 +82,19 @@ int main(int argc, char *argv[])
     char mapping[MAX_VERT];
     graph_t g1;
     graph_t g2;
+    struct rusage before;
+    struct rusage after;
 
     memset(&mapping, 0, MAX_VERT);
 
     read(&g1);
     read(&g2);
 
-    if (isomorphic(g1, g2, mapping)) {
+    getrusage(RUSAGE_SELF, &before);
+    int is_isomorphic = isomorphic(g1, g2, mapping);
+    getrusage(RUSAGE_SELF, &after);
+
+    if (is_isomorphic) {
         printf("%3s -> %3s\n", "G1", "G2");
         for (int i = 0; i < g1.n; i++) {
             printf("%3d -> %3d\n", i, mapping[i]);
@@ -93,6 +102,9 @@ int main(int argc, char *argv[])
     } else {
         printf("not isomorphic\n");
     }
+    long elapsed = after.ru_utime.tv_sec - before.ru_utime.tv_sec * 1000000L;
+    elapsed =+ (after.ru_utime.tv_usec - before.ru_utime.tv_usec);
+    printf("CPU time: %lf\n", elapsed/(double)1000000.0);
 
     return 0;
 }

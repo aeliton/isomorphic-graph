@@ -98,10 +98,10 @@ print(char *graph) {
 int
 main(int argc, char *argv[])
 {
-    int n, e, num_g, i;
+    int n, e, num_g, gen_isomorphic;
     char c;
 
-    n = e = num_g = i = -1;
+    n = e = num_g = gen_isomorphic = 0;
 
     while ((c = getopt(argc, argv, "n:e:i")) != -1) {
         switch(c) {
@@ -117,6 +117,8 @@ main(int argc, char *argv[])
                     opterr++;
                 }
                 break;
+            case 'i':
+                gen_isomorphic = 1;
             case '?':
                 fprintf(stderr, "Unrecognized option: '-%c'\n", optopt);
                 break;
@@ -132,10 +134,17 @@ main(int argc, char *argv[])
 
     char graph[256];
     char iso[256];
-    memset(&graph, -1, sizeof(graph));
-    generate((char*) &graph, n);
-    print((char*) &graph);
-    print(isomorph((char*) &iso, (char*) &graph));
+
+    for (int i = 0; i < num_g; i++) {
+        memset(&graph, -1, sizeof(graph));
+        generate((char*) &graph, n);
+
+        print((char*) &graph);
+        if (gen_isomorphic) {
+            print(isomorph((char*) &iso, (char*) &graph));
+        }
+        putchar('\n');
+    }
 
     return 0;
 }

@@ -35,7 +35,7 @@ picky_rand_set(char *set, char amount, char limit, char ignore) {
 }
 
 char*
-generate(char *graph, int vertices, int isomorph)
+generate(char *graph, int vertices)
 {
     graph[0] = vertices;
     for (int i = 0, pos = 1; i < vertices; i++, pos += graph[pos] + 1) {
@@ -49,6 +49,40 @@ generate(char *graph, int vertices, int isomorph)
     }
 }
 
+char *
+isomorph(char *iso, char *graph) {
+    char map[CHAR_MAX];
+    char used[CHAR_MAX];
+    char vertex_pos[CHAR_MAX];
+
+    for (int i = 0, pos = 1; i < graph[0]; i++, pos += graph[pos] + 1) {
+        vertex_pos[i] = pos;
+    }
+
+    memset(&used, 0, sizeof(used));
+    picky_rand_set((char*) &map, graph[0], graph[0], -1);
+    for (int i = 0; i < graph[0]; i++) {
+        if (!used[i] && used[map[i]]) {
+            map[i] = i;
+        } else {
+            used[i] = 1;
+            used[map[i]] = 1;
+            map[map[i]] = i;
+        }
+    }
+
+    iso[0] = graph[0];
+    int j;
+    for (int i = 0, pos = 1; i < graph[0]; i++, pos += iso[pos] + 1) {
+        iso[pos] = graph[vertex_pos[map[i]]];
+        for (j = 1; j <= iso[pos]; j++) {
+            iso[pos + j] = map[graph[vertex_pos[map[i]] + j]];
+        }
+    }
+
+    return iso;
+}
+
 void
 print(char *graph) {
     int j;
@@ -58,6 +92,7 @@ print(char *graph) {
         }
         printf("%d%c", graph[pos + j], (i == graph[0] - 1 ? '.' : ';'));
     }
+    printf("\n");
 }
 
 int
@@ -96,9 +131,11 @@ main(int argc, char *argv[])
     srand(time(NULL));
 
     char graph[256];
+    char iso[256];
     memset(&graph, -1, sizeof(graph));
-    generate((char*) &graph, n, i);
+    generate((char*) &graph, n);
     print((char*) &graph);
+    print(isomorph((char*) &iso, (char*) &graph));
 
     return 0;
 }

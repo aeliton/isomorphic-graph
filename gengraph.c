@@ -119,8 +119,9 @@ main(int argc, char *argv[])
                 break;
             case 'i':
                 gen_isomorphic = 1;
+                break;
             case '?':
-                fprintf(stderr, "Unrecognized option: '-%c'\n", optopt);
+                fprintf(stderr, "Unrecognized option: '-%c' (0x%x)\n", optopt, optopt);
                 break;
         }
     }

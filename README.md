@@ -6,12 +6,17 @@ identify isomorphic graphs.
 
 The work consists in:
 
-0. implement a brute force graph isomorphism checker (see brute.c);
-1. generate graphs using _geng_ (_nauty_);
-2. convert the graphs to a human readable format, using _showg_ (_nauty_);
-3. format the graph to the format used by *brute*;
-4. run the generate inputs in brute and _dreadnaut_ (_nauty_);
-5. compare the results.
+1. ~~Gerador de entradas conforme descrito em 2;~~
+1. ~~Um algoritmo que determina se dois grafos s ̃ao isomorfos utilizando a técnica de força bruta;~~
+1. ~~Caso haja tempo, uma transcrição do algoritmo de McKay para python 3;~~
+1. ~~Caso haja tempo, uma pequena introdução ao algoritmo quasi-polinomial de Babai (BABAI, 2016) (BABAI, 2017).~~
+1. implement a brute force graph isomorphism checker (see brute.c);
+1. ~~generate graphs using _geng_ (_nauty_);~~
+1. ~~convert the graphs to a human readable format, using _showg_ (_nauty_);~~
+1. ~~format the graph to the format used by *brute*;~~
+1. run the generate inputs in brute
+1. run the generate inputs in _dreadnaut_ (_nauty_);
+1. compare the results.
 
 ## Input
 
